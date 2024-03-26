@@ -18,7 +18,10 @@ class HotelCardWidget extends StatefulWidget {
 class _HotelCardWidgetState extends State<HotelCardWidget> {
   @override
   Widget build(BuildContext context) {
-    List<String> suiteNumbers = widget.hotel.suitesAvailability.split(':').where((element) => element.isNotEmpty).toList();
+    List<String> suiteNumbers = widget.hotel.suitesAvailability
+        .split(':')
+        .where((element) => element.isNotEmpty)
+        .toList();
     return Material(
       color: Colors.white,
       child: InkWell(
@@ -47,43 +50,12 @@ class _HotelCardWidgetState extends State<HotelCardWidget> {
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 12.0, bottom: 8),
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(5),
-                          topRight: Radius.circular(5),
-                          bottomLeft: Radius.circular(5),
-                          bottomRight: Radius.circular(5),
-                        ),
-                        color: Color.fromRGBO(255, 198, 0, 0.20000000298023224),
-                      ),
-                      padding:
-                          const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          const Icon(
-                            Icons.star,
-                            color: Color(0xffFFA800),
-                            size: 18,
-                          ),
-                          Text(
-                            ' ${widget.hotel.stars}',
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(
-                              color: Color.fromRGBO(255, 168, 0, 1),
-                              fontFamily: 'SFProDisplay',
-                              fontSize: 16,
-                              letterSpacing: 0,
-                              fontWeight: FontWeight.normal,
-                              height: 1.5,
-                            ),
-                          ),
-                        ],
-                      ),
+                  MyChip(
+                    text: widget.hotel.stars.toString(),
+                    icon: const Icon(
+                      Icons.star,
+                      color: Color(0xffFFA800),
+                      size: 18,
                     ),
                   ),
                 ],

@@ -3,6 +3,11 @@
         android:label="hotels_t"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+
+
+        <meta-data android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAa9LcDLVyuMRnADgPPGItVDXx_z6joJVA"/>
+
         <activity
             android:name=".MainActivity"
             android:exported="true"

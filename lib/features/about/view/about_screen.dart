@@ -1,11 +1,14 @@
+import 'dart:async';
+
 import 'package:auto_route/auto_route.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hotels_t/api/models/hotels.dart';
-import 'package:hotels_t/ui/widgets/my_chip.dart';
+import 'package:hotels_t/features/about/view/hotel_info_widget.dart';
+import 'package:hotels_t/features/about/view/map_card.dart';
 import 'package:hotels_t/ui/widgets/text_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../bloc/about_bloc.dart';
 
@@ -51,96 +54,29 @@ class _AboutScreenState extends State<AboutScreen> {
               child: CircularProgressIndicator(),
             ),
             loaded: (hotel) {
-              List<String> suiteNumbers = widget.hotel.suitesAvailability.split(':').where((element) => element.isNotEmpty).toList();
+
+              List<String> suiteNumbers = widget.hotel.suitesAvailability
+                  .split(':')
+                  .where((element) => element.isNotEmpty)
+                  .toList();
               lat = hotel.lat;
               lon = hotel.lon;
               return Padding(
                 padding: const EdgeInsets.only(top: 8.0),
-                child: SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width,
-                          height: 210,
-                          child: CachedNetworkImage(
-                            fit: BoxFit.cover,
-                            imageUrl: "https://terexov.ru/test/${hotel.image}",
-                            placeholder: (context, url) =>
-                                const Center(child: Placeholder()),
-                            errorWidget: (context, url, error) =>
-                                const Icon(Icons.error),
-                          ),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Flexible(
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 8.0),
-                                child: MyText(
-                                  hotel.address,
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 22,
-                                ),
-                              ),
-                            ),
-                            MyChip(
-                              text: hotel.stars.toString(),
-                              icon: const Icon(
-                                Icons.star,
-                                color: Color(0xffFFA800),
-                                size: 18,
-                              ),
-                            ),
-                          ],
-                        ),
-                        Flexible(
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 8.0),
-                            child: MyText(
-                              'Расстояние от центра: ${hotel.distance}',
-                              fontWeight: FontWeight.w400,
-                              fontSize: 18,
-                            ),
-                          ),
-                        ),
-                        const Padding(
-                          padding: EdgeInsets.only(top: 8.0),
-                          child: MyText(
-                            'Доступные номера',
-                            fontWeight: FontWeight.w400,
-                            fontSize: 18,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 55,
-                          child: ListView.separated(
-                            shrinkWrap: true,
-                            scrollDirection: Axis.horizontal,
-                            itemBuilder: (context, index) {
-                              return MyChip(
-                                text: suiteNumbers[index],
-                                icon: null,
-                                color: Colors.blue,
-                                textColor: Colors.white,
-                              );
-                            },
-                            separatorBuilder: (context, index) {
-                              return const SizedBox(
-                                width: 8,
-                              );
-                            },
-                            itemCount: suiteNumbers.length,
-                          ),
-                        ),
-                      ],
+                child: ListView(
+                  children: [
+                    HotelInfoWidget(
+                      hotel: hotel,
+                      suiteNumbers: suiteNumbers,
                     ),
-                  ),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    MapCard(hotel: hotel),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                  ],
                 ),
               );
             },
